@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dev Solu | Soluciones digitales para tu empresa</title>
+  <meta name="description" content="Impulsamos tu negocio con sitios web y software a medida. Auditoría gratuita. Contacto fácil por WhatsApp y formulario.">
+  <!-- Google Fonts: Poppins -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Header / Hero Section -->
+  <header class="header">
+    <div class="logo">Dev Solu</div>
+    <nav class="nav" id="nav">
+      <ul>
+        <li><a href="#inicio">Inicio</a></li>
+        <li><a href="#servicios">Servicios</a></li>
+        <li><a href="#testimonios">Testimonios</a></li>
+        <li><a href="#contacto">Contacto</a></li>
+      </ul>
+    </nav>
+    <button class="nav-toggle" id="nav-toggle" aria-label="Abrir menú">&#9776;</button>
+  </header>
+
+  <section class="hero" id="inicio">
+    <h1>Impulsamos tu negocio con soluciones digitales</h1>
+    <p>Creamos sitios web y software a medida para empresas que quieren crecer online.</p>
+    <div class="hero-buttons">
+      <a href="#contacto" class="btn btn-secondary">Solicitar auditoría gratuita</a>
+      <a href="https://wa.me/8492078083" target="_blank" class="btn btn-whatsapp">WhatsApp</a>
+    </div>
+  </section>
+
+  <!-- Servicios -->
+  <section class="servicios" id="servicios">
+    <h2>Servicios</h2>
+    <div class="servicios-cards">
+      <div class="card">
+        <div class="card-icon">🌐</div>
+        <h3>Paquete Solo</h3>
+        <p>Sitio web sencillo de una página. Ideal para comenzar tu presencia online.</p>
+        <div class="card-precio">USD $300</div>
+        <a href="#contacto" class="btn btn-secondary">Contactar</a>
+        <button class="btn btn-secondary btn-detalle" data-servicio="solo">Detalle</button>
+      </div>
+      <div class="card">
+        <div class="card-icon">🏢</div>
+        <h3>Paquete Pro</h3>
+        <p>Sitio web multi-sección, profesional y escalable para empresas.</p>
+        <div class="card-precio">USD $580</div>
+        <a href="#contacto" class="btn btn-secondary">Contactar</a>
+        <button class="btn btn-secondary btn-detalle" data-servicio="pro">Detalle</button>
+      </div>
+      <div class="card">
+        <div class="card-icon">🛒</div>
+        <h3>Paquete Tienda</h3>
+        <p>Tienda online completa con carrito de compras y pasarelas de pago.</p>
+        <div class="card-precio">USD $920</div>
+        <a href="#contacto" class="btn btn-secondary">Contactar</a>
+        <button class="btn btn-secondary btn-detalle" data-servicio="tienda">Detalle</button>
+      </div>
+      <div class="card">
+        <div class="card-icon">💻</div>
+        <h3>Paquete Avanzado</h3>
+        <p>Desarrollo de software a medida para necesidades específicas.</p>
+        <div class="card-precio">A Cotizar</div>
+        <a href="#contacto" class="btn btn-secondary">Contactar</a>
+        <button class="btn btn-secondary btn-detalle" data-servicio="avanzado">Detalle</button>
+      </div>
+      <div class="card">
+        <div class="card-icon">⚙️</div>
+        <h3>Paquete mantenimiento</h3>
+        <p>Soporte y actualizaciones para tu sitio web.</p>
+        <div class="card-precio">USD $100/mes</div>
+        <a href="#contacto" class="btn btn-secondary">Contactar</a>
+        <button class="btn btn-secondary btn-detalle" data-servicio="mantenimiento">Detalle</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sobre nosotros -->
+  <section class="sobre-nosotros" id="sobre-nosotros">
+    <h2>Sobre nosotros</h2>
+    <p>
+      En Dev Solu ayudamos a empresas a dar el salto digital. Creamos sitios web modernos, rápidos y adaptados a cada necesidad.<br>
+      Nos encargamos de todo: diseño, desarrollo, mantenimiento y soporte.<br>
+      La tecnología no tiene que ser complicada. Nosotros te la hacemos fácil.
+    </p>
+  </section>
+
+  <!-- Testimonios -->
+  <section class="testimonios" id="testimonios">
+    <h2>Testimonios</h2>
+    <div class="testimonio-container" id="testimonio-container">
+      <!-- Testimonios dinámicos con JS -->
+    </div>
+  </section>
+
+  <!-- Call to Action -->
+  <section class="cta">
+    <h2>¿Tu negocio aún no tiene web?</h2>
+    <p>Escribinos y te ayudamos a crecer online.</p>
+    <a href="https://wa.me/84292078083" target="_blank" class="btn btn-whatsapp-large">WhatsApp</a>
+  </section>
+
+  <!-- Formulario de contacto -->
+  <section class="contacto" id="contacto">
+    <h2>Contacto</h2>
+    <form id="contact-form" autocomplete="off">
+      <div class="form-group">
+        <label for="nombre">Nombre</label>
+        <input type="text" id="nombre" name="nombre" required>
+      </div>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required>
+      </div>
+      <div class="form-group">
+        <label for="mensaje">Mensaje</label>
+        <textarea id="mensaje" name="mensaje" rows="4" required></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary">Enviar</button>
+      <div id="form-msg"></div>
+    </form>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-links">
+      <a href="https://instagram.com/tuusuario" target="_blank" aria-label="Instagram">Instagram</a>
+      <a href="mailto:contacto@devsolu.com" aria-label="Email">Email</a>
+      <a href="https://wa.me/84292078083" target="_blank" aria-label="WhatsApp">WhatsApp</a>
+    </div>
+    <p>© 2025 dev_solu. Todos los derechos reservados.</p>
+  </footer>
+
+  <!-- Modal de detalles de servicio -->
+  <div id="modal-detalle" class="modal-detalle">
+    <div class="modal-content">
+      <span class="modal-close" id="modal-close">&times;</span>
+      <h3 id="modal-titulo">Detalle del servicio</h3>
+      <ul id="modal-descripcion"></ul>
+      <div id="modal-precio1"></div>      
+      <div id="modal-precio2"></div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
