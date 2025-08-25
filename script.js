@@ -1,6 +1,7 @@
 // --- Menú hamburguesa para mobile ---
 const navToggle = document.getElementById('nav-toggle');
 const navUl = document.querySelector('.nav ul');
+const whatsappLink = document.getElementById('whatsapp-link');
 
 navToggle.addEventListener('click', () => {
   navUl.classList.toggle('active');
@@ -50,13 +51,18 @@ setInterval(rotarTestimonios, 5000);
 const form = document.getElementById('contact-form');
 const formMsg = document.getElementById('form-msg');
 
+
+
 form.addEventListener('submit', function(e) {
   e.preventDefault();
+
   const nombre = form.nombre.value.trim();
   const email = form.email.value.trim();
   const mensaje = form.mensaje.value.trim();
+  const asunto = form.asunto.value.trim();
+  const telefono = form.telefono.value.trim();
 
-  if (!nombre || !email || !mensaje) {
+  if (!nombre || !email || !mensaje || !asunto || !telefono) {
     formMsg.textContent = "Por favor, completa todos los campos.";
     formMsg.style.color = "#b30000";
     return;
@@ -71,8 +77,37 @@ form.addEventListener('submit', function(e) {
   formMsg.style.color = "#0056b3";
   form.reset();
 
-  // Aquí podrías integrar emailjs o backend en el futuro
+  emailjs.send("service_qjciobx","template_pjla8ws",{
+    from_name: nombre,
+    from_email: email,
+    subject: asunto,
+    message: mensaje
+  }).then(() => {
+    formMsg.textContent = "¡Mensaje enviado! Te responderemos pronto.";
+    formMsg.style.color = "#0056b3";
+    form.reset();
+  }, (error) => {
+    formMsg.textContent = "Error al enviar el mensaje. Intenta nuevamente.";
+    formMsg.style.color = "#b30000";
+    console.error("EmailJS error:", error);
+  });  
 });
+
+  whatsappLink.addEventListener('click', function(e) {
+    e.preventDefault();
+
+    const nombre = form.nombre.value.trim();
+    const email = form.email.value.trim();
+    const mensaje = form.mensaje.value.trim();
+    const asunto = form.asunto.value.trim();
+    const telefono = form.telefono.value.trim();
+
+    const texto = `*Nombre:* ${nombre}%0A*Asunto:* ${asunto}%0A*Correo:* ${email}%0A*Teléfono:* ${telefono}%0A*Mensaje:* ${mensaje}`;
+    const numero = '18492078083';
+    const url = `https://wa.me/${numero}?text=${texto}`;
+    window.open(url, '_blank');
+    form.reset();
+  });
 
 // --- Animaciones al hacer scroll (fade-in) ---
 const animElements = document.querySelectorAll('.card, .sobre-nosotros, .testimonio, .cta, .contacto');
@@ -190,9 +225,12 @@ document.querySelectorAll('.btn-detalle').forEach(btn => {
     const info = detallesServicios[tipo];
     modalTitulo.textContent = info.titulo;
     modalDescripcion.innerHTML = info.descripcion.map(item => `<li>${item}</li>`).join('');
-    modalPrecio1.innerHTML = info.precio.unico ? "Pago unico: " + info.precio.unico : "";
-    modalPrecio2.innerHTML = info.precio.instalacion  ? "Pago inicial: " + info.precio.instalacion + (info.precio.mensual ? " | Mensual: " + info.precio.mensual : "") : (info.precio.mensual ? "Mensual: " + info.precio.mensual :"Sin suscripción");
+    modalPrecio1.innerHTML = info.precio.unico ? "<strong>Pago único:</strong> " + info.precio.unico : "";
+    modalPrecio2.innerHTML = info.precio.instalacion  ? "<strong>Pago inicial:</strong> " + info.precio.instalacion + (info.precio.mensual ? " | <strong>Mensual:</strong> " + info.precio.mensual : "") : (info.precio.mensual ? "<strong>Mensual:</strong> " + info.precio.mensual :"Sin suscripción");
     modal.classList.add('active');
+
+    document.getElementById('modal-precio-o').style.display = (info.precio.unico && (info.precio.instalacion || info.precio.mensual)) ? 'block' : 'none';
+
   });
 });
 

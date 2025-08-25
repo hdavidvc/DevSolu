@@ -126,7 +126,13 @@ body {
 .btn-whatsapp:hover, .btn-whatsapp-large:hover {
   background: #128c7e;
 }
-
+.modal-precio-o {
+  display: block;
+  text-align: center;
+  margin: 0.5rem 0;
+  font-size: 1rem;
+  color: #555;
+}
 .btn-whatsapp-large {
   background: #25d366;
   color: #fff;
@@ -430,6 +436,9 @@ input:focus, textarea:focus {
     width: 90%;
     margin-bottom: 2rem;
   }
+  input, textarea {
+    width: 95%;
+  }
 }
 
 @media (max-width: 700px) {
@@ -458,8 +467,10 @@ input:focus, textarea:focus {
   }
   .nav ul.active {
     display: flex;
+    padding-inline: 5px;
   }
   .nav-toggle {
     display: block;
   }
+  
 }

@@ -8,6 +8,16 @@
   <!-- Google Fonts: Poppins -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <script type="text/javascript"
+        src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js">
+  </script>
+  <script type="text/javascript">
+    (function(){
+        emailjs.init({
+          publicKey: "iQg3fXzAKcu42Lk50",
+        });
+    })();
+  </script>
 </head>
 <body>
   <!-- Header / Hero Section -->
@@ -114,6 +124,14 @@
         <input type="text" id="nombre" name="nombre" required>
       </div>
       <div class="form-group">
+        <label for="asunto">Asunto</label>
+        <input type="text" id="asunto" name="asunto" required>
+      </div>
+      <div class="form-group">
+        <label for="telefono">Telefono</label>
+        <input type="text" id="telefono" name="telefono" required>
+      </div>
+      <div class="form-group">
         <label for="email">Email</label>
         <input type="email" id="email" name="email" required>
       </div>
@@ -122,6 +140,7 @@
         <textarea id="mensaje" name="mensaje" rows="4" required></textarea>
       </div>
       <button type="submit" class="btn btn-primary">Enviar</button>
+      <a id="whatsapp-link" href="https://wa.me/84292078083" target="_blank" class="btn btn-whatsapp">WhatsApp</a>
       <div id="form-msg"></div>
     </form>
   </section>
@@ -129,7 +148,7 @@
   <!-- Footer -->
   <footer class="footer">
     <div class="footer-links">
-      <a href="https://instagram.com/tuusuario" target="_blank" aria-label="Instagram">Instagram</a>
+      <a href="https://instagram.com/dev_solu" target="_blank" aria-label="Instagram">Instagram</a>
       <a href="mailto:contacto@devsolu.com" aria-label="Email">Email</a>
       <a href="https://wa.me/84292078083" target="_blank" aria-label="WhatsApp">WhatsApp</a>
     </div>
@@ -142,7 +161,8 @@
       <span class="modal-close" id="modal-close">&times;</span>
       <h3 id="modal-titulo">Detalle del servicio</h3>
       <ul id="modal-descripcion"></ul>
-      <div id="modal-precio1"></div>      
+      <div id="modal-precio1"></div>
+      <span id="modal-precio-o">O</span>
       <div id="modal-precio2"></div>
     </div>
   </div>
