@@ -426,6 +426,122 @@ input:focus, textarea:focus {
   font-weight: bold;
 }
 
+#testimonio-link {
+  color: #0056b3;
+  text-decoration: underline;
+}
+
+/* Portafolio/Clientes */
+.portafolio {
+  background: #fff;
+  padding: 4rem 2rem;
+  text-align: center;
+  min-height: 70vh;
+}
+
+.portafolio h2 {
+  color: #0056b3;
+  margin-bottom: 2rem;
+  font-size: 2rem;
+  letter-spacing: 1px;
+}
+
+.portafolio-cards {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+}
+
+.portafolio-card {
+  background: #f9f9f9;
+  border-radius: 18px;
+  box-shadow: 0 4px 16px rgba(0,86,179,0.08);
+  padding: 1.5rem 1rem;
+  width: 260px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  transition: transform 0.2s, box-shadow 0.2s;
+  border: 1px solid #e0e0e0;
+}
+
+.portafolio-card:hover {
+  transform: translateY(-6px) scale(1.03);
+  box-shadow: 0 8px 24px rgba(0,86,179,0.15);
+}
+
+.portafolio-img {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  border-radius: 50%;
+  margin-bottom: 1rem;
+  background: #fff;
+  border: 2px solid #e0e0e0;
+}
+
+/* Imagen placeholder para portafolio */
+.portafolio-img.placeholder {
+  background: #e0e0e0 url('https://avatar.iran.liara.run/public/15') center center no-repeat;
+  background-size: cover;
+  border: 2px dashed #bbb;
+}
+
+.portafolio-info h3 {
+  margin: 0.5rem 0 0.2rem 0;
+  color: #0056b3;
+  font-size: 1.15rem;
+  font-weight: 600;
+}
+
+.portafolio-info p {
+  margin: 0 0 0.7rem 0;
+  color: #444;
+  font-size: 1rem;
+}
+
+.portafolio-info a.btn {
+  margin-top: 0.5rem;
+  width: auto;
+  min-width: 120px;
+  max-width: 90%;
+  font-size: 0.95rem;
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  box-sizing: border-box;
+}
+
+/* Responsive para portafolio */
+@media (max-width: 900px) {
+  .portafolio-cards {
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+  }
+  .portafolio-card {
+    width: 90%;
+    max-width: 350px;
+  }
+}
+
+@media (max-width: 600px) {
+  .portafolio {
+    padding: 2rem 0.5rem;
+  }
+  .portafolio-card {
+    padding: 1rem 0.5rem;
+  }
+  .portafolio-img {
+    width: 60px;
+    height: 60px;
+  }
+}
+
 /* Responsive */
 @media (max-width: 900px) {
   .servicios-cards {

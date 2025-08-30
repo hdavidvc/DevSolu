@@ -22,7 +22,8 @@ document.querySelectorAll('.nav a').forEach(link => {
 // --- Testimonios dinámicos ---
 const testimonios = [  {
     texto: "Hector Cabrera, abogado, logró captar clientes de empresas gracias a su nueva web profesional y formulario de contacto.",
-    nombre: "Hector Cabrera - Abogados & Consultores"
+    nombre: "Hector Cabrera - Abogados & Consultores",
+    link: "https://veryjused.com"
   }
 ];
 
@@ -34,7 +35,7 @@ function mostrarTestimonio(index) {
   testimonioContainer.innerHTML = `
     <div class="testimonio">
       <p>"${t.texto}"</p>
-      <div class="testimonio-nombre">${t.nombre}</div>
+      <div class="testimonio-nombre"><a id="testimonio-link" href="${t.link}" target="_blank">${t.nombre}</a></div>
     </div>
   `;
 }

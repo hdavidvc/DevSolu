@@ -5,9 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dev Solu | Soluciones digitales para tu empresa</title>
   <meta name="description" content="Impulsamos tu negocio con sitios web y software a medida. Auditoría gratuita. Contacto fácil por WhatsApp y formulario.">
+  <meta name="keywords" content="web, software, desarrollo, tienda online, mantenimiento, pagina web, sitio web, soluciones digitales">
+  <meta name="author" content="dev_solu">  
+  
+  <link rel="icon" type="image/x-icon" href="../public/assets/img/Favicon.ico">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <!-- Google Fonts: Poppins -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="../src/style.css">
   <script type="text/javascript"
         src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js">
   </script>
@@ -27,6 +32,7 @@
       <ul>
         <li><a href="#inicio">Inicio</a></li>
         <li><a href="#servicios">Servicios</a></li>
+        <li><a href="#portafolio">Clientes</a></li>
         <li><a href="#testimonios">Testimonios</a></li>
         <li><a href="#contacto">Contacto</a></li>
       </ul>
@@ -39,7 +45,7 @@
     <p>Creamos sitios web y software a medida para empresas que quieren crecer online.</p>
     <div class="hero-buttons">
       <a href="#contacto" class="btn btn-secondary">Solicitar auditoría gratuita</a>
-      <a href="https://wa.me/8492078083" target="_blank" class="btn btn-whatsapp">WhatsApp</a>
+      <a href="https://wa.me/8492078083" target="_blank" class="btn btn-whatsapp"><i class="fab fa-whatsapp"></i> WhatsApp</a>
     </div>
   </section>
 
@@ -108,11 +114,28 @@
     </div>
   </section>
 
+  <!-- Clientes / Portafolio -->
+  <section class="portafolio" id="portafolio">
+    <h2>Clientes y Portafolio</h2>
+    <div class="portafolio-cards">
+      <div class="portafolio-card">
+        <img src="../public/assets/img/Verijuzed/Logo.png" alt="VeryJused" class="portafolio-img">
+        <div class="portafolio-info">
+          <h3>VeryJused</h3>
+          <p>Abogados & Consultores</p>
+          <a href="https://veryjused.com" target="_blank" class="btn btn-secondary">Ver sitio</a>
+        </div>
+      </div>
+      <!-- Puedes agregar más clientes aquí -->
+    </div>
+    <a href="portafolio.html" class="btn btn-primary" style="margin-top:2rem;">Ver más clientes</a>
+  </section>
+
   <!-- Call to Action -->
   <section class="cta">
     <h2>¿Tu negocio aún no tiene web?</h2>
     <p>Escribinos y te ayudamos a crecer online.</p>
-    <a href="https://wa.me/84292078083" target="_blank" class="btn btn-whatsapp-large">WhatsApp</a>
+    <a href="https://wa.me/84292078083" target="_blank" class="btn btn-whatsapp-large"><i class="fab fa-whatsapp"></i>WhatsApp</a>
   </section>
 
   <!-- Formulario de contacto -->
@@ -140,7 +163,7 @@
         <textarea id="mensaje" name="mensaje" rows="4" required></textarea>
       </div>
       <button type="submit" class="btn btn-primary">Enviar</button>
-      <a id="whatsapp-link" href="https://wa.me/84292078083" target="_blank" class="btn btn-whatsapp">WhatsApp</a>
+      <a id="whatsapp-link" href="https://wa.me/84292078083" target="_blank" class="btn btn-whatsapp"><i class="fab fa-whatsapp"></i>WhatsApp</a>
       <div id="form-msg"></div>
     </form>
   </section>
@@ -149,10 +172,10 @@
   <footer class="footer">
     <div class="footer-links">
       <a href="https://instagram.com/dev_solu" target="_blank" aria-label="Instagram">Instagram</a>
-      <a href="mailto:contacto@devsolu.com" aria-label="Email">Email</a>
-      <a href="https://wa.me/84292078083" target="_blank" aria-label="WhatsApp">WhatsApp</a>
+      <a href="mailto:devdavidv@gmail.com" aria-label="Email">Email</a>
+      <a href="https://wa.me/84292078083" target="_blank" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i>WhatsApp</a>
     </div>
-    <p>© 2025 dev_solu. Todos los derechos reservados.</p>
+    <p>© 2025 Dev Solu. Todos los derechos reservados.</p>
   </footer>
 
   <!-- Modal de detalles de servicio -->
@@ -167,6 +190,6 @@
     </div>
   </div>
 
-  <script src="script.js"></script>
+  <script src="../src/script.js"></script>
 </body>
 </html>
