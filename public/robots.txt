@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://devsolu.vercel.app/sitemap.xml
