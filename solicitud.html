@@ -90,106 +90,171 @@
 <div class="summary" id="formSummary">Completa el formulario para ver el resumen aquí...</div>
 
 <script>
-const form = document.getElementById('serviceForm');
-const summaryDiv = document.getElementById('formSummary');
-const WHATSAPP_NUMBER = '18492078083';
-const CLOUD_NAME = 'drwkwwbcq'; // reemplaza con tu cloud name
-const UPLOAD_PRESET = 'devsolu'; // reemplaza con tu unsigned upload preset
-const progressContainer = document.getElementById('uploadProgressContainer');
-const progressBar = document.getElementById('uploadProgressBar');
-const progressStatus = document.getElementById('uploadStatus');
+  // CONFIG
+  const WHATSAPP_NUMBER = '18492078083'; // tu número sin +
+  const CLOUD_NAME = 'drwkwwbcq';
+  const UPLOAD_PRESET = 'devsolu';
+  const MAX_EMAIL_LINKS = 10; // máximo enlaces que enviaremos por email
 
-form.addEventListener('input', updateSummary);
+  // DOM
+  const form = document.getElementById('serviceForm');
+  const summary = document.getElementById('formSummary');
+  const progressContainer = document.getElementById('uploadProgressContainer');
+  const progressBar = document.getElementById('uploadProgressBar');
+  const uploadStatus = document.getElementById('uploadStatus');
 
-function updateSummary() {
-  const data = new FormData(form);
-  let resumen = `Nombre: ${data.get('nombre') || ''}\nEmpresa: ${data.get('empresa') || ''}\nEmail: ${data.get('email') || ''}\nTeléfono: ${data.get('telefono') || ''}\nServicio: ${data.get('servicio') || ''}\nPresupuesto: ${data.get('presupuesto') || ''}\nPlazo: ${data.get('plazo') || ''}\nPrioridad: ${data.get('prioridad') || ''}\nReferencias: ${data.get('referencias') || ''}\nDescripción: ${data.get('descripcion') || ''}`;
-  summaryDiv.innerText = resumen;
-}
-
-async function uploadFileToCloudinary(file){
-  return new Promise((resolve,reject)=>{
-    const url = `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/upload`;
-    const xhr = new XMLHttpRequest();
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('upload_preset', UPLOAD_PRESET);
-
-    xhr.upload.addEventListener('progress', e=>{
-      if(e.lengthComputable){
-        const percent = Math.round((e.loaded/e.total)*100);
-        progressBar.style.width = percent + '%';
-        progressStatus.innerText = `Subiendo archivos... ${percent}%`;
-      }
-    });
-
-    xhr.onload = ()=>{
-      try{
-        const res = JSON.parse(xhr.responseText);
-        resolve({ name:file.name, url:res.secure_url });
-      }catch(e){ reject(e); }
-    };
-
-    xhr.onerror = ()=>reject(new Error('Error en la subida'));
-    xhr.open('POST', url);
-    xhr.send(formData);
-  });
-}
-
-async function uploadFiles(fileList){
-  const links = [];
-  const files = Array.from(fileList||[]).filter(f=>f&&f.size>0);
-  if(!files.length) return links;
-  progressContainer.style.display='block';
-  for(let i=0;i<files.length;i++){
-    try{ const link = await uploadFileToCloudinary(files[i]); links.push(link); } catch(e){ console.error(e); }
+  // Helpers
+  function updateSummary(){
+    const d = new FormData(form);
+    const lines = [
+      `Nombre: ${d.get('nombre')||''}`,
+      `Empresa: ${d.get('empresa')||''}`,
+      `Email: ${d.get('email')||''}`,
+      `Tel: ${d.get('telefono')||''}`,
+      `Servicio: ${d.get('servicio')||''}`,
+      `Presupuesto: ${d.get('presupuesto')||''}`,
+      `Plazo: ${d.get('plazo')||''}`,
+      `Prioridad: ${d.get('prioridad')||''}`,
+      `Referencias: ${d.get('referencias')||''}`,
+      `Descripción: ${d.get('descripcion')||''}`
+    ];
+    summary.textContent = lines.join('\n');
   }
-  progressStatus.innerText='Carga completa';
-  setTimeout(()=>progressContainer.style.display='none',1500);
-  return links;
-}
-
-form.addEventListener('submit', async function(e){
-  e.preventDefault();
-  console.log('Enviando solicitud...', form);
-
-    // Crear FormData solo con los campos de texto
-  const textFields = ['nombre','empresa','email','telefono','servicio','presupuesto','plazo','prioridad','referencias','descripcion'];
-  const tempForm = new FormData();
-  textFields.forEach(f => tempForm.append(f, form[f].value));
-
-  // Enviar a EmailJS
-  emailjs.send('service_qjciobx','template_cpv6opc', Object.fromEntries(tempForm))
-    .then(()=>console.log('Correo enviado'))
-    .catch(err=>console.error('Error al enviar correo:', err));
-
-  // // Enviar datos a EmailJS (sin archivos)
-  // emailjs.sendForm('service_qjciobx','template_cpv6opc',form)
-  //   .then(()=>{ console.log('Correo enviado'); })
-  //   .catch(err=>{ console.error('Error al enviar correo:', err); });
-
-  // Subir archivos y enviar a WhatsApp
-  const data = new FormData(form);
-  const filesInput = form.querySelector('input[type="file"]');
-  const links = filesInput && filesInput.files.length ? await uploadFiles(filesInput.files) : [];
-
-  const lines = [];
-  ['nombre','empresa','email','telefono','servicio','presupuesto','plazo','prioridad','referencias','descripcion'].forEach(f=>{
-    if(data.get(f)) lines.push(`${f.charAt(0).toUpperCase()+f.slice(1)}: ${data.get(f)}`);
-  });
-
-  if(links.length){
-    lines.push('Archivos subidos:');
-    links.forEach(l=>lines.push(`${l.name}: ${l.url}`));
-  }
-
-  // Abrir WhatsApp con saltos de línea
-  window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=`+encodeURIComponent(lines.join('\n')),'_blank');
-
-  alert('Solicitud enviada al correo y a WhatsApp.');
-  form.reset();
+  form.addEventListener('input', updateSummary);
   updateSummary();
-});
+
+  // Upload using XHR so we can track progress
+  function uploadFileToCloudinary(file, onProgress){
+    return new Promise((resolve,reject)=>{
+      const url = `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/upload`;
+      const xhr = new XMLHttpRequest();
+      const fd = new FormData();
+      fd.append('file', file);
+      fd.append('upload_preset', UPLOAD_PRESET);
+
+      xhr.open('POST', url);
+      xhr.upload.onprogress = function(e){ if(e.lengthComputable && onProgress){ onProgress(e.loaded, e.total); } };
+      xhr.onload = function(){
+        try{ const res = JSON.parse(xhr.responseText); if(res && res.secure_url) resolve({name: file.name, url: res.secure_url}); else reject(new Error('No secure_url')); }
+        catch(err){ reject(err); }
+      };
+      xhr.onerror = function(){ reject(new Error('Upload error')); };
+      xhr.send(fd);
+    });
+  }
+
+  async function uploadFilesWithProgress(fileList){
+    const files = Array.from(fileList||[]).filter(f=>f && f.size>0);
+    if(!files.length) return [];
+    progressContainer.style.display = 'block';
+    progressBar.style.width = '0%';
+    uploadStatus.textContent = 'Preparando subida...';
+
+    const results = [];
+    // track overall progress by bytes
+    const totalBytes = files.reduce((s,f)=>s+f.size,0);
+    let uploadedBytes = 0;
+
+    for(const file of files){
+      try{
+        const r = await uploadFileToCloudinary(file, (loaded,total)=>{
+          // update overall using uploadedBytes + current loaded
+          const percent = Math.round(((uploadedBytes + loaded) / totalBytes) * 100);
+          progressBar.style.width = percent + '%';
+          uploadStatus.textContent = `Subiendo archivos... ${percent}%`;
+        });
+        results.push(r);
+        uploadedBytes += file.size; // assume fully uploaded
+      }catch(err){ console.error('Upload failed', file.name, err); }
+    }
+
+    progressBar.style.width = '100%';
+    uploadStatus.textContent = 'Carga completa';
+    setTimeout(()=>{ progressContainer.style.display='none'; progressBar.style.width='0%'; uploadStatus.textContent=''; }, 1400);
+    return results;
+  }
+
+  // Shorten URL using is.gd (no key). If CORS blocks this, fallback to original URL.
+  async function shortenUrl(url){
+    try{
+      const api = 'https://is.gd/create.php?format=json&url=' + encodeURIComponent(url);
+      const res = await fetch(api);
+      if(!res.ok) throw new Error('is.gd failed');
+      const j = await res.json();
+      if(j && j.shorturl) return j.shorturl;
+      return url;
+    }catch(e){ console.warn('Shorten failed, using full url', e); return url; }
+  }
+
+  // send to EmailJS but ensure no file inputs are sent. We'll clone the form and remove file inputs.
+  async function sendEmailOnly(){
+    // clone form, remove file inputs
+    const cloned = form.cloneNode(true);
+    const fileInputs = cloned.querySelectorAll('input[type="file"]');
+    fileInputs.forEach(n => n.remove());
+
+    // append short file links hidden fields already present in original form
+    // (we create them on original form before calling this)
+
+    // append clone to body temporarily
+    cloned.style.display = 'none';
+    document.body.appendChild(cloned);
+
+    try{
+      await emailjs.sendForm('service_qjciobx','template_cpv6opc',cloned);
+    }catch(err){ console.error('EmailJS error', err); throw err; }
+    finally{ cloned.remove(); }
+  }
+
+  // Main submit flow: upload files, shorten, attach hidden fields (short) for email, send email, open whatsapp with full links
+  form.addEventListener('submit', async function(e){
+    e.preventDefault();
+    try{
+      // 1) Upload files to Cloudinary (if any)
+      const filesInput = form.querySelector('input[type="file"]');
+      const uploaded = filesInput && filesInput.files.length ? await uploadFilesWithProgress(filesInput.files) : [];
+
+      // 2) Shorten the uploaded URLs for email (limit to MAX_EMAIL_LINKS)
+      const shortened = [];
+      for(const u of uploaded){
+        const short = await shortenUrl(u.url);
+        shortened.push({name: u.name, full: u.url, short});
+        // small delay to be gentle with is.gd
+        await new Promise(r=>setTimeout(r,120));
+      }
+
+      // 3) Remove any previous file_link_* hidden inputs on form
+      for(let i=1;i<=MAX_EMAIL_LINKS;i++){ const f = form.querySelector(`[name=file_link_${i}]`); if(f) f.remove(); }
+
+      // 4) Create hidden inputs with short links for EmailJS (only up to MAX_EMAIL_LINKS)
+      shortened.slice(0,MAX_EMAIL_LINKS).forEach((s,i)=>{
+        const inp = document.createElement('input'); inp.type='hidden'; inp.name = `file_link_${i+1}`; inp.value = s.short; form.appendChild(inp);
+      });
+
+      // 5) Send data (without files) to EmailJS
+      try{
+        await sendEmailOnly();
+        console.log('Email enviado con éxito');
+      }catch(err){ console.warn('Fallo al enviar email, continuamos para WhatsApp', err); }
+
+      // 6) Build WhatsApp message using full links (all uploaded)
+      const d = new FormData(form);
+      const fields = ['nombre','empresa','email','telefono','servicio','presupuesto','plazo','prioridad','referencias','descripcion'];
+      const waLines = [];
+      for(const f of fields){ if(d.get(f)) waLines.push(`${capitalize(f)}: ${d.get(f)}`); }
+      if(uploaded.length){ waLines.push('Archivos subidos:'); uploaded.forEach(u=>waLines.push(`${u.name}: ${u.url}`)); }
+
+      // open WhatsApp
+      const waUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=` + encodeURIComponent(waLines.join('\n'));
+      window.open(waUrl, '_blank');
+
+      alert('Solicitud enviada al correo y se abrió WhatsApp.');
+      form.reset(); updateSummary();
+    }catch(err){ console.error(err); alert('Ocurrió un error: ' + (err.message||err)); }
+  });
+
+  function capitalize(s){ return s.charAt(0).toUpperCase()+s.slice(1); }
 </script>
+
 </body>
 </html>
