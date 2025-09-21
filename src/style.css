@@ -518,6 +518,65 @@ input:focus, textarea:focus {
   box-sizing: border-box;
 }
 
+#serviceForm {
+  max-width:800px; 
+  margin:auto; 
+  background:#fff; 
+  padding:30px 25px; 
+  border-radius:16px; 
+  box-shadow:0 6px 20px rgba(0,0,0,0.15); 
+  display:flex; 
+  flex-direction:column; 
+  gap:15px;
+  margin-top: 6rem;
+}
+
+#h2soli { 
+  text-align:center; 
+  color:#0056b3; 
+  margin-bottom:20px; 
+}
+  #serviceForm label { 
+    font-weight:600; 
+    margin-top:8px; 
+  }
+  #serviceForm input, #serviceForm select, #serviceForm textarea { 
+    width:95%; 
+    padding:10px 12px; 
+    border:1px solid #ccc; 
+    border-radius:10px; 
+    font-size:15px; 
+    transition:border-color 0.3s ease, 
+    box-shadow 0.3s ease; 
+  }
+  #serviceForm input:focus, #serviceForm select:focus, #serviceForm textarea:focus { 
+    border-color:#0056b3; 
+    box-shadow:0 0 5px rgba(0,86,179,0.3); 
+    outline:none; 
+  }
+  #serviceForm button { 
+    padding:14px; 
+    background:#0056b3; 
+    color:white; 
+    border:none; 
+    border-radius:10px; 
+    font-size:16px; 
+    cursor:pointer; 
+    transition: background 0.3s ease; 
+  }
+  #serviceForm button:hover { 
+    background:#004494; 
+  }
+
+@media(max-width:600px){ 
+  #serviceForm { 
+    padding:20px 15px; 
+  } 
+  #serviceForm button { 
+    font-size:15px; 
+  } 
+}
+
 /* Responsive para portafolio */
 @media (max-width: 900px) {
   .portafolio-cards {

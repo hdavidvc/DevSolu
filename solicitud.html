@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Solicitud de Servicio - Dev Solu</title>
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+  <script>
+    (function(){ emailjs.init('iQg3fXzAKcu42Lk50'); })();
+  </script>
+  <style>
+  body { font-family: 'Segoe UI', Tahoma, sans-serif; background: linear-gradient(135deg,#f0f0f0,#dfe9f3); margin:0; padding:40px 10px; }
+  
+  .summary { max-width:800px; margin:25px auto; background:#fdfdfd; padding:20px; border-left:6px solid #0056b3; border-radius:10px; box-shadow:0 4px 10px rgba(0,0,0,0.05); font-size:14px; white-space: pre-wrap; }
+  #uploadProgressContainer { width:100%; background:#eee; border-radius:10px; overflow:hidden; display:none; margin-top:10px; }
+  #uploadProgressBar { height:12px; width:0%; background:#0056b3; border-radius:10px; transition: width 0.2s ease; }
+  #uploadStatus { font-size:13px; margin-top:5px; color:#555; }
+  input[type="file"] { padding:5px; border:none; }
+  
+  </style>
+  <link rel="icon" type="image/x-icon" href="assets/img/Favicon.ico">
+  <link rel="stylesheet" href="src/style.css">
+</head>
+<body>
+   <header class="header">
+    <img src="assets/img/Favicon.ico" alt="Dev Solu" srcset="">
+    <nav class="nav">
+      <ul>
+        <li><a href="index.html#inicio">Inicio</a></li>
+        <li><a href="index.html#servicios">Servicios</a></li>
+        <li><a href="portafolio.html">Clientes</a></li>
+        <li><a href="index.html#testimonios">Testimonios</a></li>
+        <li><a href="index.html#contacto">Contacto</a></li>
+      </ul>
+    </nav>
+    <button class="nav-toggle" id="nav-toggle" aria-label="Abrir menú">&#9776;</button>
+  </header>
+  <form id="serviceForm">
+    <h2 id="h2soli">Solicitud de Servicio</h2>
+    <label>Nombre Completo:</label>
+    <input type="text" name="nombre" required>
+
+    <label>Empresa:</label>
+    <input type="text" name="empresa" placeholder="Nombre de la empresa si aplica">
+
+    <label>Correo Electrónico:</label>
+    <input type="email" name="email" required>
+
+    <label>Teléfono:</label>
+    <input type="tel" name="telefono" required>
+
+    <label>Referencias (webs, redes o ejemplos que te gusten):</label>
+    <textarea name="referencias" placeholder="Links o descripciones de referencias"></textarea>
+
+    <label>Servicio requerido:</label>
+    <select name="servicio" required>
+      <option value="Sitio Web">Desarrollo de Sitio Web</option>
+      <option value="E-commerce">E-commerce</option>
+      <option value="Software a medida">Software a medida</option>
+      <option value="Mantenimiento">Mantenimiento</option>
+    </select>
+
+    <label>Descripción detallada del proyecto:</label>
+    <textarea name="descripcion" rows="5" required></textarea>
+
+    <label>Presupuesto estimado:</label>
+    <input type="text" name="presupuesto" placeholder="Opcional">
+
+    <label>Plazo deseado:</label>
+    <input type="text" name="plazo" placeholder="Ej: 2 semanas">
+
+    <label>Prioridad:</label>
+    <select name="prioridad">
+      <option value="Normal">Normal</option>
+      <option value="Alta">Alta</option>
+      <option value="Urgente">Urgente</option>
+    </select>
+
+    <label>Adjuntar archivos (si es necesario):</label>
+    <input type="file" name="archivos" multiple>
+
+    <div id="uploadProgressContainer">
+      <div id="uploadProgressBar"></div>
+      <div id="uploadStatus">Subiendo archivos...</div>
+    </div>
+
+    <button type="submit">Enviar Solicitud</button>
+  </form>
+
+<div class="summary" id="formSummary">Completa el formulario para ver el resumen aquí...</div>
+
+<script>
+const form = document.getElementById('serviceForm');
+const summaryDiv = document.getElementById('formSummary');
+const WHATSAPP_NUMBER = '18492078083';
+const CLOUD_NAME = 'drwkwwbcq'; // reemplaza con tu cloud name
+const UPLOAD_PRESET = 'devsolu'; // reemplaza con tu unsigned upload preset
+const progressContainer = document.getElementById('uploadProgressContainer');
+const progressBar = document.getElementById('uploadProgressBar');
+const progressStatus = document.getElementById('uploadStatus');
+
+form.addEventListener('input', updateSummary);
+
+function updateSummary() {
+  const data = new FormData(form);
+  let resumen = `Nombre: ${data.get('nombre') || ''}\nEmpresa: ${data.get('empresa') || ''}\nEmail: ${data.get('email') || ''}\nTeléfono: ${data.get('telefono') || ''}\nServicio: ${data.get('servicio') || ''}\nPresupuesto: ${data.get('presupuesto') || ''}\nPlazo: ${data.get('plazo') || ''}\nPrioridad: ${data.get('prioridad') || ''}\nReferencias: ${data.get('referencias') || ''}\nDescripción: ${data.get('descripcion') || ''}`;
+  summaryDiv.innerText = resumen;
+}
+
+async function uploadFileToCloudinary(file){
+  return new Promise((resolve,reject)=>{
+    const url = `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/upload`;
+    const xhr = new XMLHttpRequest();
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', UPLOAD_PRESET);
+
+    xhr.upload.addEventListener('progress', e=>{
+      if(e.lengthComputable){
+        const percent = Math.round((e.loaded/e.total)*100);
+        progressBar.style.width = percent + '%';
+        progressStatus.innerText = `Subiendo archivos... ${percent}%`;
+      }
+    });
+
+    xhr.onload = ()=>{
+      try{
+        const res = JSON.parse(xhr.responseText);
+        resolve({ name:file.name, url:res.secure_url });
+      }catch(e){ reject(e); }
+    };
+
+    xhr.onerror = ()=>reject(new Error('Error en la subida'));
+    xhr.open('POST', url);
+    xhr.send(formData);
+  });
+}
+
+async function uploadFiles(fileList){
+  const links = [];
+  const files = Array.from(fileList||[]).filter(f=>f&&f.size>0);
+  if(!files.length) return links;
+  progressContainer.style.display='block';
+  for(let i=0;i<files.length;i++){
+    try{ const link = await uploadFileToCloudinary(files[i]); links.push(link); } catch(e){ console.error(e); }
+  }
+  progressStatus.innerText='Carga completa';
+  setTimeout(()=>progressContainer.style.display='none',1500);
+  return links;
+}
+
+form.addEventListener('submit', async function(e){
+  e.preventDefault();
+  console.log('Enviando solicitud...', form);
+
+    // Crear FormData solo con los campos de texto
+  const textFields = ['nombre','empresa','email','telefono','servicio','presupuesto','plazo','prioridad','referencias','descripcion'];
+  const tempForm = new FormData();
+  textFields.forEach(f => tempForm.append(f, form[f].value));
+
+  // Enviar a EmailJS
+  emailjs.send('service_qjciobx','template_cpv6opc', Object.fromEntries(tempForm))
+    .then(()=>console.log('Correo enviado'))
+    .catch(err=>console.error('Error al enviar correo:', err));
+
+  // // Enviar datos a EmailJS (sin archivos)
+  // emailjs.sendForm('service_qjciobx','template_cpv6opc',form)
+  //   .then(()=>{ console.log('Correo enviado'); })
+  //   .catch(err=>{ console.error('Error al enviar correo:', err); });
+
+  // Subir archivos y enviar a WhatsApp
+  const data = new FormData(form);
+  const filesInput = form.querySelector('input[type="file"]');
+  const links = filesInput && filesInput.files.length ? await uploadFiles(filesInput.files) : [];
+
+  const lines = [];
+  ['nombre','empresa','email','telefono','servicio','presupuesto','plazo','prioridad','referencias','descripcion'].forEach(f=>{
+    if(data.get(f)) lines.push(`${f.charAt(0).toUpperCase()+f.slice(1)}: ${data.get(f)}`);
+  });
+
+  if(links.length){
+    lines.push('Archivos subidos:');
+    links.forEach(l=>lines.push(`${l.name}: ${l.url}`));
+  }
+
+  // Abrir WhatsApp con saltos de línea
+  window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=`+encodeURIComponent(lines.join('\n')),'_blank');
+
+  alert('Solicitud enviada al correo y a WhatsApp.');
+  form.reset();
+  updateSummary();
+});
+</script>
+</body>
+</html>
